@@ -1,41 +1,26 @@
-import React, { useEffect, useState } from "react";
-import TaskList from "./TaskList";
-import { tasksStore } from "./sampleTasks";
+import React from "react";
+import logo from "./logo.svg";
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
+import Memberships from "./pages/memberships";
 
-interface TaskType {
-  id: number;
-  name: string;
-  description: string;
-  dueDate: string;
-  completed: boolean;
-}
+// import "./App.css";
 
 function App() {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-
-  const loadTasks = useEffect(() => {
-    setTasks(tasksStore);
-  }, []);
-  const handleSaveTask = (task: TaskType) => {
-    setTasks([...tasks, task]);
-  };
-  const handleEditTask = (taskId: number) => {
-    // setTasks([...tasks, task]);
-  };
-  const handleDeleteTask = (taskId: number) => {
-    const newTasks = tasks.filter((task: TaskType) => {
-      return task.id !== taskId;
-    });
-    setTasks(newTasks);
-  };
-
   return (
-    <div className="App">
-      <TaskList
-        tasks={tasks}
-        onDeleteTask={handleDeleteTask}
-        onEditTask={handleEditTask}
-      />
+    <div>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">Lista de Membresías</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text>
+              flash ejemplo: <a href="#login">Bum!</a>
+            </Navbar.Text>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Memberships />
     </div>
   );
 }
