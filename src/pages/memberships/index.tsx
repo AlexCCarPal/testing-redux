@@ -67,7 +67,7 @@ const Memberships = () => {
   };
 
   const handleCancelCreate = () => setShowCreateMembership(false);
-  const handleToCreateMembership = (membership: any) => () => {
+  const handleToCreateMembership = () => {
     // setMembershipToCreate(membership);
     setShowCreateMembership(true);
   };
@@ -118,7 +118,7 @@ const Memberships = () => {
       </ToastContainer>
 
       <ConfirmModal
-        message={`Está a punto de eliminar la membresía con id: ${membershipToDelete?.id} and email: ${membershipToDelete?.email}`}
+        message={`Está a punto de eliminar la membresía de: ${membershipToDelete?.name} con correo: ${membershipToDelete?.email}`}
         title="Seguro que desea eliminarla?"
         visible={showConfirm}
         onConfirm={handleConfirmDelete}
@@ -202,7 +202,7 @@ const Memberships = () => {
           <Table className="col-11" bordered hover>
             <thead>
               <tr>
-                <th>Id</th>
+                <th>Nombre</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
                 <th>Creada</th>
@@ -214,12 +214,11 @@ const Memberships = () => {
               </tr>
             </thead>
             <tbody>
-              {console.log(membershipsList)}
               {membershipsList.map((membership: any) => (
                 <tr key={membership.id}>
                   <td className={getMembershipStatus(membership)}>
                     <div className="row">
-                      <p className="col-10 id">{membership.id}</p>
+                      <p className="col-10 id">{membership.name}</p>
                     </div>
                   </td>
                   <td>{membership.email}</td>

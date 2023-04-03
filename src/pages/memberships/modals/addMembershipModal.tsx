@@ -1,27 +1,9 @@
-import { addDays, addMonths, addYears, format } from "date-fns";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-
-import {
-  TimeMeasureType,
-  TimeMeasure,
-} from "../../../components/membership-period";
-
-function buildDate(measure: TimeMeasureType, period: number, fromDate: Date) {
-  switch (measure) {
-    case TimeMeasure.DAYS:
-      return addDays(fromDate, period);
-    case TimeMeasure.MONTHS:
-      return addMonths(fromDate, period);
-    case TimeMeasure.YEARS:
-      return addYears(fromDate, period);
-  }
-  return new Date();
-}
 
 const Category: any = {
   STANDARD: "Standard",
@@ -31,14 +13,8 @@ const Category: any = {
 
 type CategoryType = typeof Category;
 
-const AddMembershipModal = ({
-  loading,
-  membership,
-  visible,
-  onCancel,
-  onCreate,
-}: any) => {
-  const [categoryType, setCategoryType] = useState<CategoryType>(null);
+const AddMembershipModal = ({ loading, visible, onCancel, onCreate }: any) => {
+  const [category, setCategory] = useState<CategoryType>(null);
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [phone, setPhone] = useState<string>();
@@ -49,7 +25,8 @@ const AddMembershipModal = ({
       email,
       phone,
       created: new Date(),
-      categoryType,
+      expirationDate: null,
+      category,
     };
     onCreate(membership);
   };
@@ -81,9 +58,9 @@ const AddMembershipModal = ({
 
         <DropdownButton
           variant="outline-secondary"
-          key={categoryType}
-          title={!categoryType ? "Seleccione Categoría" : categoryType}
-          onSelect={(value) => setCategoryType(value!)}
+          key={category}
+          title={!category ? "Seleccione Categoría" : category}
+          onSelect={(value) => setCategory(value!)}
         >
           <Dropdown.Item eventKey={Category.STANDARD}>Standard</Dropdown.Item>
           <Dropdown.Item eventKey={Category.GOLD}>Gold</Dropdown.Item>

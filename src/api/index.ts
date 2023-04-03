@@ -34,7 +34,8 @@ export async function updateExpirationDate(
 ) {
   await setDoc(
     doc(firestoreDb, "memberships", membershipId),
-    { expirationDate: Timestamp.fromDate(expirationDate) },
+    { expirationDate: Timestamp.fromDate(expirationDate), updated: new Date() },
+
     { merge: true }
   );
   return membershipId;
