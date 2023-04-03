@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { MembershipStatus } from "./status";
-import { loadMemberships, deleteMembership, updateMembership } from "../../api";
+import {
+  loadMemberships,
+  deleteMembership,
+  updateMembership,
+  createMembership,
+  updateExpirationDate,
+} from "../../api";
 
 const useMembershipState = () => {
   const [membershipsList, setMembershipsList] = useState<any>([]);
@@ -18,6 +24,11 @@ const useMembershipState = () => {
 
   const handleSearch = () => setFilterVersion(filterVersion + 1);
 
+  const handleCreateMembership = async (membership: any) => {
+    await createMembership(membership);
+    setFilterVersion(filterVersion + 1);
+  };
+
   const handleDeleteMembership = async (membership: any) => {
     await deleteMembership(membership);
     setFilterVersion(filterVersion + 1);
@@ -29,10 +40,16 @@ const useMembershipState = () => {
     await updateMembership(membershipId, membership);
     setFilterVersion(filterVersion + 1);
   };
+  const handleUpdateExpirationDate = async (
+    membershipId: string,
+    expirationDate: Date
+  ) => {
+    await updateExpirationDate(membershipId, expirationDate);
+    setFilterVersion(filterVersion + 1);
+  };
 
   useEffect(() => {
     loadMemberships(filters).then((res) => setMembershipsList(res));
-    // setMembershipsList(loadMemberships(filters));
   }, [filterVersion]);
 
   return {
@@ -40,8 +57,10 @@ const useMembershipState = () => {
     membershipsList,
     handleFilterChange,
     handleSearch,
+    handleCreateMembership,
     handleDeleteMembership,
     handleUpdateMembership,
+    handleUpdateExpirationDate,
   };
 };
 
