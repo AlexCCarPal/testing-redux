@@ -22,6 +22,10 @@ const useMembershipState = () => {
     });
   };
 
+  const handleStatusChange = (key: string, value: string) => {
+    handleFilterChange(key, value);
+    setFilterVersion(filterVersion + 1);
+  };
   const handleSearch = () => setFilterVersion(filterVersion + 1);
 
   const handleCreateMembership = async (membership: any) => {
@@ -57,6 +61,7 @@ const useMembershipState = () => {
     membershipsList,
     handleFilterChange,
     handleSearch,
+    handleStatusChange,
     handleCreateMembership,
     handleDeleteMembership,
     handleUpdateMembership,

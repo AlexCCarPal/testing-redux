@@ -25,6 +25,7 @@ const Memberships = () => {
     handleSearch,
     handleCreateMembership,
     handleDeleteMembership,
+    handleStatusChange,
     handleUpdateMembership,
     handleUpdateExpirationDate,
   } = useMembershipState();
@@ -80,9 +81,9 @@ const Memberships = () => {
     setShowCreateMembership(false);
   };
 
-  const handleCopyMembershipId = (membershipId: string) => () => {
+  const handleCopyMembershipEmail = (membershipEmail: string) => () => {
     setShowClipboardToast(true);
-    navigator.clipboard.writeText(membershipId);
+    navigator.clipboard.writeText(membershipEmail);
   };
   const getMembershipPeriod = (membership: any) => {
     if (!membership.expirationDate) {
@@ -103,6 +104,11 @@ const Memberships = () => {
 
     return result;
   };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <>
@@ -113,7 +119,7 @@ const Memberships = () => {
           onClose={() => setShowClipboardToast(false)}
           autohide
         >
-          <Toast.Body>{`Copiado al portapapeles`}</Toast.Body>
+          <Toast.Body>{`Correo copiado al portapapeles`}</Toast.Body>
         </Toast>
       </ToastContainer>
 
@@ -146,12 +152,14 @@ const Memberships = () => {
             <InputGroup.Text>Correo</InputGroup.Text>
             <Form.Control
               placeholder="example@email.com"
+              onKeyDown={handleKeyDown}
               onChange={(e) =>
                 handleFilterChange("email", e.currentTarget.value)
               }
             />
             <InputGroup.Text>Teléfono</InputGroup.Text>
             <Form.Control
+              onKeyDown={handleKeyDown}
               onChange={(e) =>
                 handleFilterChange("phone", e.currentTarget.value)
               }
@@ -164,8 +172,8 @@ const Memberships = () => {
                   ? "None"
                   : filters.status.toUpperCase().replace("-", " ")
               }
-              onSelect={(value) => handleFilterChange("status", value!)}
               disabled={filterByEmailOrPhone}
+              onSelect={(value) => handleStatusChange("status", value!)}
             >
               <Dropdown.Item eventKey={MembershipStatus.ACTIVE}>
                 Activa
@@ -234,7 +242,7 @@ const Memberships = () => {
                       <i className="bi bi-pencil-square"></i>
                     </Button>{" "}
                     &nbsp;
-                    {membership.expirationDate || "null"}
+                    {membership.expirationDate || "Activar Membresía"}
                   </td>
                   <td>
                     {membership.expirationDate && (
@@ -253,7 +261,7 @@ const Memberships = () => {
                   <td>
                     <Button
                       variant="outline-secondary"
-                      onClick={handleCopyMembershipId(membership.id)}
+                      onClick={handleCopyMembershipEmail(membership.email)}
                     >
                       <i className="bi bi-clipboard"></i>
                     </Button>
