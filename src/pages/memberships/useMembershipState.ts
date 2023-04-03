@@ -5,7 +5,7 @@ import { loadMemberships, deleteMembership, updateMembership } from "../../api";
 const useMembershipState = () => {
   const [membershipsList, setMembershipsList] = useState<any>([]);
   const [filters, setFilterValue] = useState<any>({
-    status: MembershipStatus.EXPIRED,
+    status: MembershipStatus.ACTIVE,
   });
   const [filterVersion, setFilterVersion] = useState(0);
 
@@ -31,8 +31,8 @@ const useMembershipState = () => {
   };
 
   useEffect(() => {
-    // loadMemberships(filters).then((res) => setMembershipsList(res));
-    setMembershipsList(loadMemberships(filters));
+    loadMemberships(filters).then((res) => setMembershipsList(res));
+    // setMembershipsList(loadMemberships(filters));
   }, [filterVersion]);
 
   return {

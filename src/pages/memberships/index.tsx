@@ -141,11 +141,11 @@ const Memberships = () => {
               onSelect={(value) => handleFilterChange("status", value!)}
               disabled={filterByEmailOrPhone}
             >
-              <Dropdown.Item eventKey={MembershipStatus.EXPIRED}>
-                Expirada
-              </Dropdown.Item>
               <Dropdown.Item eventKey={MembershipStatus.ACTIVE}>
                 Activa
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={MembershipStatus.EXPIRED}>
+                Expirada
               </Dropdown.Item>
               <Dropdown.Item eventKey={MembershipStatus.REQUESTED}>
                 Solicitada
