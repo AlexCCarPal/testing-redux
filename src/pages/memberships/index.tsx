@@ -11,7 +11,7 @@ import useMembershipState from "./useMembershipState";
 import { getMembershipStatus, MembershipStatus } from "./status";
 import { isNullOrEmpty } from "./helpers";
 import { Badge, Toast, ToastContainer } from "react-bootstrap";
-import { UpdateMembershipModal } from "./modals";
+import { UpdateMembershipModal, AddMembershipModal } from "./modals";
 import { ConfirmModal } from "../../components/modals";
 import distance from "date-fns/formatDistanceStrict";
 
@@ -23,16 +23,20 @@ const Memberships = () => {
     membershipsList,
     handleFilterChange,
     handleSearch,
+    handleCreateMembership,
     handleDeleteMembership,
     handleUpdateMembership,
+    handleUpdateExpirationDate,
   } = useMembershipState();
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showCreateMembership, setShowCreateMembership] = useState(false);
   const [showUpdateMembershipPeriod, setShowUpdateMembershipPeriod] =
     useState(false);
   const [membershipToDelete, setMembershipToDelete] = useState<any>(null);
   const [showClipboardToast, setShowClipboardToast] = useState(false);
   const [membershipToUpdate, setMembershipToUpdate] = useState<any>(null);
+  const [membershipToCreate, setMembershipToCreate] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
 
   const filterByEmailOrPhone = !(
@@ -57,9 +61,23 @@ const Memberships = () => {
   const handleCancelUpdate = () => setShowUpdateMembershipPeriod(false);
   const handleConfirmUpdate = async (expirationDate: Date) => {
     setUpdating(true);
-    await handleUpdateMembership(membershipToUpdate.id, expirationDate);
+    await handleUpdateExpirationDate(membershipToUpdate.id, expirationDate);
     setUpdating(false);
     setShowUpdateMembershipPeriod(false);
+  };
+
+  const handleCancelCreate = () => setShowCreateMembership(false);
+  const handleToCreateMembership = (membership: any) => () => {
+    // setMembershipToCreate(membership);
+    setShowCreateMembership(true);
+  };
+
+  const handleConfirmCreateMembership = async (membership: any) => {
+    //TODO
+    setUpdating(true);
+    await handleCreateMembership(membership);
+    setUpdating(false);
+    setShowCreateMembership(false);
   };
 
   const handleCopyMembershipId = (membershipId: string) => () => {
@@ -114,6 +132,14 @@ const Memberships = () => {
         visible={showUpdateMembershipPeriod}
       />
 
+      <AddMembershipModal
+        loading={updating}
+        membership={{}}
+        onCancel={handleCancelCreate}
+        onCreate={handleConfirmCreateMembership}
+        visible={showCreateMembership}
+      />
+
       <div className="row justify-content-md-center">
         <div className="col-11 mt-4">
           <InputGroup>
@@ -159,6 +185,16 @@ const Memberships = () => {
             </Button>
           </InputGroup>
         </div>
+
+        <div className="col-11 mt-4">
+          <InputGroup>
+            <Button onClick={handleToCreateMembership}>
+              <i className="bi bi-plus" style={{ padding: "0 0 15px" }}></i>
+              Nueva
+            </Button>
+          </InputGroup>
+        </div>
+
         <div className="col-11 mt-4">
           {membershipsList && (
             <Badge bg="secondary">{membershipsList.length}</Badge>

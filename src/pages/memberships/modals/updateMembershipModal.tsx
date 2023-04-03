@@ -30,7 +30,7 @@ const UpdateMembershipModal = ({
 
   const fromDate = !membership.expirationDate
     ? new Date()
-    : new Date(membership.originalExpirationDate);
+    : membership.originalExpirationDate.toDate();
   const computedDate = period
     ? buildDate(period.measure!, period.value!, fromDate)
     : null;

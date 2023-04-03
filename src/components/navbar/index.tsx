@@ -1,15 +1,15 @@
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 
-function TextLinkExample() {
+function MyNavbar() {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">Lista de Tareas</Navbar.Brand>
+        <Navbar.Brand href="#home">Lista de Membresías</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            App Ejemplo: <a href="#login">Bum!</a>
+            flash ejemplo: <a href="#login">Bum!</a>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
@@ -17,4 +17,4 @@ function TextLinkExample() {
   );
 }
 
-export default TextLinkExample;
+export default MyNavbar;
