@@ -54,7 +54,7 @@ export async function loadMemberships(
   filters: { [key: string]: string } | null = null
 ) {
   const queryConditions = buildQuery(filters);
-
+  console.log(...queryConditions);
   const membershipsQuery = query(
     collection(firestoreDb, "memberships"),
     ...queryConditions
@@ -109,24 +109,3 @@ function buildStatusCondition(status: MembershipStatus) {
       return [where("expirationDate", "<", new Date())];
   }
 }
-// export function loadMembershipsStatic(
-//   filters: { [key: string]: string } | null = null
-// ) {
-//   const memberships = sampleMemberships.map((d) => {
-//     const data = d;
-
-//     return {
-//       ...data,
-//       originalExpirationDate: data?.expirationDate,
-//       originalCreatedAt: data?.created,
-//       originalUpdatedAt: data?.updated,
-//       expirationDate: data?.expirationDate
-//         ? format(new Date(data.expirationDate), "Pp")
-//         : null,
-//       created: data?.created ? format(new Date(data.created), "Pp") : null,
-//       updated: data?.updated ? format(new Date(data.updated), "Pp") : null,
-//     };
-//   });
-
-//   return memberships;
-// }
