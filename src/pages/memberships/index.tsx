@@ -213,7 +213,7 @@ const Memberships = () => {
                 <th>Creada</th>
                 <th>Actualizada</th>
                 <th>Fecha Expiración</th>
-                <th>Valida por</th>
+                <th>Tiempo Restante/Total</th>
                 <th>Categoría</th>
                 <th>Copiar/Eliminar</th>
               </tr>
