@@ -1,4 +1,5 @@
 import { isNil, isEmpty } from "ramda";
+import isAfter from "date-fns/isAfter";
 
 export const isNullOrEmpty = (value: string) => isNil(value) || isEmpty(value);
 
@@ -44,4 +45,20 @@ export const validateFields = (fields: {
     validateCategory(fields.category) &&
     validateName(fields.name)
   );
+};
+export enum MembershipStatus {
+  REQUESTED = "solicitada",
+  EXPIRED = "expirada",
+  ACTIVE = "activa",
+}
+
+export const getMembershipStatus = (membership: any) => {
+  if (!membership.expirationDate) {
+    return MembershipStatus.REQUESTED;
+  }
+  if (isAfter(new Date(), new Date(membership.expirationDate))) {
+    return MembershipStatus.EXPIRED;
+  }
+
+  return MembershipStatus.ACTIVE;
 };

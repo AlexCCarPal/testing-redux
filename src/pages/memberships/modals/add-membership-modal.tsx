@@ -48,7 +48,7 @@ const AddMembershipModal = ({ loading, visible, onCancel, onCreate }: any) => {
       <Modal.Body>
         <InputGroup.Text>Nombre</InputGroup.Text>
         <Form.Control
-          placeholder=""
+          placeholder="Nombre"
           onChange={(e) => setName(e.target.value)}
         />
         <InputGroup.Text>correo</InputGroup.Text>

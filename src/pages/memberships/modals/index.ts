@@ -1,2 +1,2 @@
-export { default as UpdateMembershipModal } from "./updateMembershipModal";
-export { default as AddMembershipModal } from "./addMembershipModal";
+export { default as UpdateMembershipModal } from "./update-membership-modal";
+export { default as AddMembershipModal } from "./add-membership-modal";

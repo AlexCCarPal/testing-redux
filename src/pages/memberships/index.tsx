@@ -5,9 +5,12 @@ import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
-import useMembershipState from "./useMembershipState";
-import { getMembershipStatus, MembershipStatus } from "./status";
-import { isNullOrEmpty } from "./helpers";
+import useMembershipState from "./use-membership-state";
+import {
+  getMembershipStatus,
+  MembershipStatus,
+  isNullOrEmpty,
+} from "./helpers";
 import { Badge, Toast, ToastContainer } from "react-bootstrap";
 import { UpdateMembershipModal, AddMembershipModal } from "./modals";
 import { ConfirmModal } from "../../components/modals";
@@ -24,7 +27,6 @@ const Memberships = () => {
     handleCreateMembership,
     handleDeleteMembership,
     handleStatusChange,
-    handleUpdateMembership,
     handleUpdateExpirationDate,
   } = useMembershipState();
 
@@ -66,12 +68,10 @@ const Memberships = () => {
 
   const handleCancelCreate = () => setShowCreateMembership(false);
   const handleToCreateMembership = () => {
-    // setMembershipToCreate(membership);
     setShowCreateMembership(true);
   };
 
   const handleConfirmCreateMembership = async (membership: any) => {
-    //TODO
     setUpdating(true);
     await handleCreateMembership(membership);
     setUpdating(false);

@@ -9,12 +9,9 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { firestoreDb } from "../firebase";
-
 import { isNil, omit } from "ramda";
-import { MembershipStatus } from "../pages/memberships/status";
-
+import { MembershipStatus } from "../pages/memberships/helpers";
 import format from "date-fns/format";
-import { sampleMemberships } from "./sampleMemberships";
 
 export async function createMembership(membership: any) {
   const docRef = await addDoc(
@@ -22,10 +19,6 @@ export async function createMembership(membership: any) {
     membership
   );
   return docRef;
-}
-
-export function updateMembership(membershipId: number, membership: any) {
-  return sampleMemberships;
 }
 
 export async function updateExpirationDate(
@@ -98,16 +91,7 @@ function buildQuery(filters: { [key: string]: string } | null) {
   if (!filters) {
     return [];
   }
-  // const queryConditions = Object.keys(omit(["status"], filters))
-  //   .filter((k) => !(isNil(filters[k]) || isEmpty(filters[k])))
-  //   .map((k) => where(k, "==", filters[k].trim()));
 
-  // const statusConditions =
-  //   queryConditions.length <= 0 && filters.status
-  //     ? buildStatusCondition(filters.status as any)
-  //     : [];
-
-  // return statusConditions.concat(queryConditions);
   return filters.status ? buildStatusCondition(filters.status as any) : [];
 }
 function buildStatusCondition(status: MembershipStatus) {
