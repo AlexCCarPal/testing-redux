@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { firestoreDb } from "../firebase";
 
-import { isNil, isEmpty, omit } from "ramda";
+import { isNil, omit } from "ramda";
 import { MembershipStatus } from "../pages/memberships/status";
 
 import format from "date-fns/format";
@@ -54,7 +54,6 @@ export async function loadMemberships(
   filters: { [key: string]: string } | null = null
 ) {
   const queryConditions = buildQuery(filters);
-  console.log(...queryConditions);
   const membershipsQuery = query(
     collection(firestoreDb, "memberships"),
     ...queryConditions
@@ -69,6 +68,8 @@ export async function loadMemberships(
 
       return {
         ...data,
+        email: data.email,
+        phone: data.phone,
         originalExpirationDate: data?.expirationDate,
         originalCreatedAt: data?.created,
         originalUpdatedAt: data?.updated,
@@ -80,7 +81,16 @@ export async function loadMemberships(
         id: d.id,
       };
     });
+  if (!isNil(filters)) {
+    const keys = Object.keys(omit(["status"], filters));
 
+    const membershipsFiltered = memberships.filter((m: any) => {
+      return keys.every((key) => {
+        return m[key]?.includes(filters[key]);
+      });
+    });
+    return membershipsFiltered;
+  }
   return memberships;
 }
 
@@ -88,16 +98,17 @@ function buildQuery(filters: { [key: string]: string } | null) {
   if (!filters) {
     return [];
   }
-  const queryConditions = Object.keys(omit(["status"], filters))
-    .filter((k) => !(isNil(filters[k]) || isEmpty(filters[k])))
-    .map((k) => where(k, "==", filters[k].trim()));
+  // const queryConditions = Object.keys(omit(["status"], filters))
+  //   .filter((k) => !(isNil(filters[k]) || isEmpty(filters[k])))
+  //   .map((k) => where(k, "==", filters[k].trim()));
 
-  const statusConditions =
-    queryConditions.length <= 0 && filters.status
-      ? buildStatusCondition(filters.status as any)
-      : [];
+  // const statusConditions =
+  //   queryConditions.length <= 0 && filters.status
+  //     ? buildStatusCondition(filters.status as any)
+  //     : [];
 
-  return statusConditions.concat(queryConditions);
+  // return statusConditions.concat(queryConditions);
+  return filters.status ? buildStatusCondition(filters.status as any) : [];
 }
 function buildStatusCondition(status: MembershipStatus) {
   switch (status) {
