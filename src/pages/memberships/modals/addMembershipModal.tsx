@@ -1,23 +1,17 @@
 import { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Toast, ToastContainer } from "react-bootstrap";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-
-const Category: any = {
-  STANDARD: "Standard",
-  GOLD: "Gold",
-  PREMIUM: "Premium",
-};
-
-type CategoryType = typeof Category;
+import { Category, CategoryType, validateFields } from "../helpers";
 
 const AddMembershipModal = ({ loading, visible, onCancel, onCreate }: any) => {
   const [category, setCategory] = useState<CategoryType>(null);
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [phone, setPhone] = useState<string>();
+  const [showErrorsToast, setShowErrorsToast] = useState(false);
 
   const handleConfirm = () => {
     const membership = {
@@ -28,7 +22,9 @@ const AddMembershipModal = ({ loading, visible, onCancel, onCreate }: any) => {
       expirationDate: null,
       category,
     };
-    onCreate(membership);
+    validateFields(membership)
+      ? onCreate(membership)
+      : setShowErrorsToast(true);
   };
   const handleCancel = () => {
     onCancel();
@@ -36,6 +32,16 @@ const AddMembershipModal = ({ loading, visible, onCancel, onCreate }: any) => {
 
   return (
     <Modal show={visible} size="sm" centered>
+      <ToastContainer position="middle-center">
+        <Toast
+          show={showErrorsToast}
+          delay={2000}
+          onClose={() => setShowErrorsToast(false)}
+          autohide
+        >
+          <Toast.Body>{`Hay Errores en los campos`}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <Modal.Header>
         <Modal.Title>Agregar Membresía</Modal.Title>
       </Modal.Header>

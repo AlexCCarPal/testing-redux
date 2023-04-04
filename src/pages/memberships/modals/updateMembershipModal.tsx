@@ -1,6 +1,7 @@
 import { addDays, addMonths, addYears, format } from "date-fns";
+import { isNil } from "ramda";
 import { useState } from "react";
-import { Badge, Button, Modal } from "react-bootstrap";
+import { Badge, Button, Modal, Toast, ToastContainer } from "react-bootstrap";
 import MembershipPeriod from "../../../components/membership-period";
 import {
   TimeMeasureType,
@@ -27,21 +28,25 @@ const UpdateMembershipModal = ({
   onUpdate,
 }: any) => {
   const [period, setPeriod] = useState<any>(null);
-
+  const [showErrorsToast, setShowErrorsToast] = useState(false);
   const fromDate = !membership.expirationDate
     ? new Date()
     : membership.originalExpirationDate.toDate();
-  const computedDate = period
+  const computedDate = !isNil(period)
     ? buildDate(period.measure!, period.value!, fromDate)
     : null;
-  const formattedDate = period ? format(computedDate!, "Pp") : "Sin Fecha";
+  const formattedDate = !isNil(period)
+    ? format(computedDate!, "Pp")
+    : "Sin Fecha";
   const label = !membership.expirationDate
     ? "Establecer duración de Membresía"
     : "Extender Membresía";
 
   const handleUpdate = (fromDate: any) => () => {
     setPeriod(null);
-    onUpdate(buildDate(period.measure!, period.value!, fromDate));
+    !isNil(period)
+      ? onUpdate(buildDate(period.measure!, period.value!, fromDate))
+      : setShowErrorsToast(true);
   };
   const handleCancel = () => {
     setPeriod(null);
@@ -50,6 +55,16 @@ const UpdateMembershipModal = ({
 
   return (
     <Modal show={visible} size="sm" centered>
+      <ToastContainer position="middle-center">
+        <Toast
+          show={showErrorsToast}
+          delay={2000}
+          onClose={() => setShowErrorsToast(false)}
+          autohide
+        >
+          <Toast.Body>{`Debe seleccionar un período`}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <Modal.Header>
         <Modal.Title>Editar tiempo de Membresía</Modal.Title>
       </Modal.Header>

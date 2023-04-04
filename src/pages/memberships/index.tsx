@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
-import { loadMemberships } from "../../api";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import MembershipPeriod from "../../components/membership-period";
 import Button from "react-bootstrap/Button";
 import useMembershipState from "./useMembershipState";
 import { getMembershipStatus, MembershipStatus } from "./status";
@@ -37,7 +35,6 @@ const Memberships = () => {
   const [membershipToDelete, setMembershipToDelete] = useState<any>(null);
   const [showClipboardToast, setShowClipboardToast] = useState(false);
   const [membershipToUpdate, setMembershipToUpdate] = useState<any>(null);
-  const [membershipToCreate, setMembershipToCreate] = useState<any>(null);
   const [updating, setUpdating] = useState(false);
 
   const filterByEmailOrPhone = !(
@@ -207,7 +204,7 @@ const Memberships = () => {
           {membershipsList && (
             <Badge bg="secondary">{membershipsList.length}</Badge>
           )}
-          <Table className="col-11" bordered hover>
+          <Table className="col-11 ela" bordered hover>
             <thead>
               <tr>
                 <th>Nombre</th>
